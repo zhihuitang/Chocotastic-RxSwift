@@ -30,6 +30,8 @@ class ChocolatesOfTheWorldViewController: UIViewController {
   @IBOutlet private var tableView: UITableView!
   let europeanChocolates = Chocolate.ofEurope
   
+  let disposeBag = DisposeBag()
+  
   //MARK: View Lifecycle
   
   override func viewDidLoad() {
@@ -38,21 +40,21 @@ class ChocolatesOfTheWorldViewController: UIViewController {
 
     tableView.dataSource = self
     tableView.delegate = self
-  }
-  
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    updateCartButton()
+    
+    setupCartObserver()
   }
   
   //MARK: Rx Setup
-  
-  
-  //MARK: Imperative methods
-  
-  func updateCartButton() {
-    cartButton.title = "\(ShoppingCart.sharedCart.chocolates.count) 🍫"
+  private func setupCartObserver() {
+      //1
+      ShoppingCart.sharedCart.chocolates.asObservable()
+        .subscribe(onNext: { //2
+          chocolates in
+          self.cartButton.title = "\(chocolates.count) 🍫"
+        })
+        .addDisposableTo(disposeBag) //3
   }
+
 }
 
 // MARK: - Table view data source
@@ -90,8 +92,7 @@ extension ChocolatesOfTheWorldViewController: UITableViewDelegate {
     tableView.deselectRow(at: indexPath, animated: true)
     
     let chocolate = europeanChocolates[indexPath.row]
-    ShoppingCart.sharedCart.chocolates.append(chocolate)
-    updateCartButton()
+    ShoppingCart.sharedCart.chocolates.value.append(chocolate)
   }
 }
 
@@ -103,3 +104,4 @@ extension ChocolatesOfTheWorldViewController: SegueHandler {
     GoToCart
   }
 }
+

@@ -1,0 +1,6 @@
+https://www.raywenderlich.com/138547/getting-started-with-rxswift-and-rxcocoa
+
+It’s great when code does exactly what you tell it to (unlike my cat). Change something in the program, tell the code to update, and it does. Good code!
+Most programming in the Object-Oriented era has been imperative like that: Your code tells your program what to do and has many ways to listen to changes—but you generally must actively tell the system when something changes.
+That’s fine as far as it goes, but wouldn’t it be even better if you could set things up so that when something in your app changes, the code updates automatically? That’s the basic idea of reactive programming: your application can react to changes in the underlying data without you telling it to do so directly. This makes it easier to focus on the logic at hand rather than maintaining a particular state.
+This can be achieved in vanilla Objective-C or Swift, mostly through Key-Value Observation and using overridden setters or the didSet method in Swift, but sometimes those methods can be cumbersome to set up correctly. To avoid this problem, there are several different frameworks in both Objective-C and Swift to facilitate the use of reactive programming.
